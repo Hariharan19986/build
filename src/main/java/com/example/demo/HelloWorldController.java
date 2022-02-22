@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Validated
 public class HelloWorldController {
 
     @Autowired
@@ -35,7 +39,7 @@ public class HelloWorldController {
     }
 
     @PostMapping("/newUser")
-    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder builder){
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder){
         try {
             userService.createNewUser(user);
             HttpHeaders headers = new HttpHeaders();
@@ -47,7 +51,7 @@ public class HelloWorldController {
     }
 
     @GetMapping("/userid/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Long id){
+    public Optional<User> getUserById(@PathVariable("id") @Min(1) Long id){
         try {
             return userService.getById(id);
         }catch (UserNotFoundException ex){
@@ -72,8 +76,12 @@ public class HelloWorldController {
     }
 
     @GetMapping("/username/{username}")
-    public User findByName(@PathVariable("username") String userName){
-        return userService.getByUserName(userName);
+    public User findByName(@PathVariable("username") String userName) throws UserNameNotFoundException{
+        User user =  userService.getByUserName(userName);
+        if (user == null){
+            throw new UserNameNotFoundException("UserName " + userName + " Not found in repository");
+        }
+        return user;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "User")
@@ -9,21 +11,59 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    @NotEmpty(message = "User Name is Mandatory")
     @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
     private String userName;
+
+    @Size(min = 2, message = "FirstName should be atleast 2")
+    @Column(name = "FIRSTNAME", length = 50, nullable = false)
+    private String firstName;
+
+    @Column(name = "LASTNAME", length = 50, nullable = false)
+    private String lastName;
+
     @Column(name = "Email", length = 100, nullable = false, unique = true)
     private String email;
+
+    @Column(name = "ROLE", length = 50, nullable = false)
+    private String role;
+
     @Column(name = "SSN", length = 50, nullable = false, unique = true)
     private String ssn;
 
-    public User(Long id, String userName, String email, String ssn) {
+    public User(Long id, String userName, String firstName, String lastName, String email, String role, String ssn) {
         this.id = id;
         this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
+        this.role = role;
         this.ssn = ssn;
     }
-    public User(){
 
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getId() {
@@ -58,13 +98,21 @@ public class User {
         this.ssn = ssn;
     }
 
+    public User(){
+
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
                 ", ssn='" + ssn + '\'' +
                 '}';
     }
+
 }
