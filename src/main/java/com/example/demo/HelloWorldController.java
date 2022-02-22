@@ -3,7 +3,12 @@ package com.example.demo;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,18 +35,35 @@ public class HelloWorldController {
     }
 
     @PostMapping("/newUser")
-    public User createUser(@RequestBody User user){
-        return userService.createNewUser(user);
+    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder builder){
+        try {
+            userService.createNewUser(user);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(builder.path("/userid/{id}").buildAndExpand(user.getId()).toUri());
+            return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        } catch (UserExistException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
     }
 
     @GetMapping("/userid/{id}")
     public Optional<User> getUserById(@PathVariable("id") Long id){
-        return userService.getById(id);
+        try {
+            return userService.getById(id);
+        }catch (UserNotFoundException ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+
     }
 
     @PutMapping("/userUpdate/{id}")
     public User updateUseById(@PathVariable("id") Long id,@RequestBody User user){
-        return userService.updateById(id, user);
+        try {
+            return userService.updateById(id, user);
+        }catch (UserNotFoundException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,ex.getMessage());
+        }
+
     }
 
     @DeleteMapping("/delete/{id}")
