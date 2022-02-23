@@ -3,6 +3,8 @@ package com.example.demo;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 //Global
 @RestController
@@ -22,6 +25,9 @@ public class HelloWorldController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ResourceBundleMessageSource messageSource;
 
     @RequestMapping(method = RequestMethod.GET, path = "/hello")
     public String helloWorld(){
@@ -82,6 +88,16 @@ public class HelloWorldController {
             throw new UserNameNotFoundException("UserName " + userName + " Not found in repository");
         }
         return user;
+    }
+
+    @GetMapping("/hello-int")
+    public String getMessageInI18NFormat(@RequestHeader(name = "Accept-Language",required = false) String locale){
+        return messageSource.getMessage("label.hello",null,new Locale(locale));
+    }
+
+    @GetMapping("/hello-int2")
+    public String getMessageInI18NFormat2(@RequestHeader(name = "Accept-Language",required = false) String locale){
+        return messageSource.getMessage("label.hello",null, LocaleContextHolder.getLocale());
     }
 
 }
