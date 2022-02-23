@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -7,10 +9,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "User")
-public class User {
+public class User extends RepresentationModel {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long userId;
 
     @NotEmpty(message = "User Name is Mandatory")
     @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
@@ -43,15 +45,7 @@ public class User {
         this.orders = orders;
     }
 
-    public User(Long id, String userName, String firstName, String lastName, String email, String role, String ssn) {
-        this.id = id;
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.ssn = ssn;
-    }
+
 
 
     public String getFirstName() {
@@ -78,13 +72,7 @@ public class User {
         this.role = role;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUserName() {
         return userName;
@@ -114,17 +102,36 @@ public class User {
 
     }
 
+    public User(Long userId, String userName, String firstName, String lastName, String email, String role, String ssn, List<Order> orders) {
+        this.userId = userId;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.ssn = ssn;
+        this.orders = orders;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", ssn='" + ssn + '\'' +
+                ", orders=" + orders +
                 '}';
     }
-
 }

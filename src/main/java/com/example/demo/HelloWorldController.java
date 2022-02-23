@@ -43,7 +43,7 @@ public class HelloWorldController {
         try {
             userService.createNewUser(user);
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(builder.path("/userid/{id}").buildAndExpand(user.getId()).toUri());
+            headers.setLocation(builder.path("/userid/{id}").buildAndExpand(user.getUserId()).toUri());
             return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
         } catch (UserExistException ex){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());

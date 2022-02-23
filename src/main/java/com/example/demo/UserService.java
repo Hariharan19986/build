@@ -40,7 +40,7 @@ public class UserService {
         if (!optionalUser.isPresent()){
             throw new UserNotFoundException("USER DOES NOT EXIST IN REPOSITORY, PLEASE PROVIDE CORRECT USER ID");
         }
-        user.setId(id);
+        user.setUserId(id);
         return userRepository.save(user);
     }
 
