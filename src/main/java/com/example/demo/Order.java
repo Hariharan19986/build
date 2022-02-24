@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -11,7 +13,9 @@ public class Order extends RepresentationModel {
 
     @Id
     @GeneratedValue
+    @JsonView(Views.Internal.class)
     private Long orderId;
+    @JsonView(Views.Internal.class)
     private String orderDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,6 +47,21 @@ public class Order extends RepresentationModel {
     }
 
     public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", orderDescription='" + orderDescription + '\'' +
+                ", user=" + user +
+                '}';
+    }
+
+    public Order(Long orderId, String orderDescription, User user) {
+        this.orderId = orderId;
+        this.orderDescription = orderDescription;
         this.user = user;
     }
 }
