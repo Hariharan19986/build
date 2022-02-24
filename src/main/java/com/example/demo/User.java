@@ -51,6 +51,9 @@ public class User extends RepresentationModel {
     @JsonView(Views.Internal.class)
     private List<Order> orders;
 
+    private String address;
+
+
     public List<Order> getOrders() {
         return orders;
     }
@@ -58,9 +61,6 @@ public class User extends RepresentationModel {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-
-
-
 
     public String getFirstName() {
         return firstName;
@@ -116,7 +116,7 @@ public class User extends RepresentationModel {
 
     }
 
-    public User(Long userId, String userName, String firstName, String lastName, String email, String role, String ssn, List<Order> orders) {
+    public User(Long userId, String userName, String firstName, String lastName, String email, String role, String ssn, List<Order> orders, String address) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -125,6 +125,7 @@ public class User extends RepresentationModel {
         this.role = role;
         this.ssn = ssn;
         this.orders = orders;
+        this.address = address;
     }
 
     public Long getUserId() {
@@ -133,6 +134,15 @@ public class User extends RepresentationModel {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
@@ -146,6 +156,7 @@ public class User extends RepresentationModel {
                 ", role='" + role + '\'' +
                 ", ssn='" + ssn + '\'' +
                 ", orders=" + orders +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
