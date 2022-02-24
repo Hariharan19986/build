@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.hateoas.RepresentationModel;
@@ -11,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "User")
-@JsonIgnoreProperties({"firstName","lastName"})
+//@JsonIgnoreProperties({"firstName","lastName"})
+@JsonFilter(value = "userFilter")
 public class User extends RepresentationModel {
     @Id
     @GeneratedValue
@@ -35,7 +37,7 @@ public class User extends RepresentationModel {
     private String role;
 
     @Column(name = "SSN", length = 50, nullable = false, unique = true)
-    @JsonIgnore
+//    @JsonIgnore
     private String ssn;
 
     @OneToMany(mappedBy = "user")
