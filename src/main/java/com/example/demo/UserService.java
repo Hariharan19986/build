@@ -15,6 +15,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired OrderRepository orderRepository;
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -24,7 +26,12 @@ public class UserService {
         if (existingUser != null){
             throw new UserExistException("USER ALREADY EXIST");
         }
-        return userRepository.save(user);
+        User user1 = userRepository.save(user);
+        for (Order order : user.getOrders()){
+            order.setUser(user1);
+            orderRepository.save(order);
+        }
+        return user1;
     }
 
     public Optional<User> getById(Long id) throws UserNotFoundException{

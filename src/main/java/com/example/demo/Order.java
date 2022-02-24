@@ -44,4 +44,19 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Order(Long orderId, String orderDescription, User user) {
+        this.orderId = orderId;
+        this.orderDescription = orderDescription;
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", orderDescription='" + orderDescription + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }
