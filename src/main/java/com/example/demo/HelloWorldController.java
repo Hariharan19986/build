@@ -21,6 +21,7 @@ import java.util.Optional;
 //Global
 @RestController
 @Validated
+@RequestMapping(value = "/users")
 public class HelloWorldController {
 
     @Autowired
